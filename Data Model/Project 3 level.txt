@@ -1,0 +1,120 @@
+
+3 - Logical Design    Modeling
+
+    - Key:
+        PK:        Unique + Not Null  (  surrogate key,       composite key      )
+                     
+        FK: (refrence )  (PK  strong  --->  weak ) 
+                
+
+        - Supplier
+                supplier_id         PK  AUTO_INCREMENT
+                name
+                phone 
+                email
+                supplier_type(foreign or internal)
+
+        - buy
+                buy_id              PK  AUTO_INCREMENT
+                name 
+                category
+                description
+                quantity
+                unitprice
+                totalprice
+                supplier_id(name, fk)      Refrences supplier (supplier_id) ON DELETE No ACTION ON UPDATE Cascade
+                buyer_name
+                but_date
+                manugacture_date
+                expire_date
+
+        - product
+               produnt_id             PK  AUTO_INCREMENT
+               name
+               category
+               unitprice
+               currency                
+               image
+               store_date(date that stored in invoice)
+               location
+
+        - employee 
+                employee_id              PK  AUTO_INCREMENT
+                nic(num tazkira, nationa identety card)
+                name
+                position
+                phone
+                email
+                education
+                address
+                image
+                gender
+                hire_date
+                dob
+                matrial_status
+                salary
+                refrence(zamanat karda ki)
+                overtime(ezafa kare)                
+                shift
+
+        - subscriber(customer nist, da website ) 
+                subscriber_id                PK  AUTO_INCREMENT
+                name 
+                image 
+                phone
+                email
+                dob
+                gender
+                address
+                order_name
+                order_date
+                quantity
+                unit price
+                total price
+                remark(comment)
+
+        - sales 
+                sales_id (invoice_id)                   PK  AUTO_INCREMENT
+                seller_name
+                produnt_id              Refrences product (product_id) ON DELETE NO ACTION ON UPDATE Cascade
+                quantity
+                unitprice
+                totalprice
+                discount
+                totalamount
+                sale_date
+
+        - sales_return 
+                return_id                   PK  AUTO_INCREMENT
+                product_id                Refrences product (product_id) ON DELETE NO ACTION ON UPDATE Cascade
+                return_date
+                reason
+                quantity
+                 
+
+        - expense 
+                expense_id                   PK  AUTO_INCREMENT
+                title
+                amount(salary amount)
+                currency
+                pay_date 
+                payer_name (employee_id)      NULL   Refrences employee (employee_id) ON DELETE  SET NULL ON UPDATE Cascade
+                receiver
+
+        - users 
+                employee_id(user_id)   FK(employee)          PK   can not be auto increment , Refrences employee(employee_id) ON DELETE CASCADE ON UPDATE CASCADE
+                username                 unique
+                password               
+                
+         - user_level (Authorization) 
+                employee_id    FK(users)         PK     can not be auto increment , Refrences users(employee_id)
+                head(admin)
+                hr(employee)                
+                stock(inventory)
+                finance
+
+
+                        
+                        
+
+

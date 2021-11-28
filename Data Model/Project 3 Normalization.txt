@@ -1,0 +1,252 @@
+3  Logical Design 
+
+Key   -- >  (relationship)
+Normalization
+PK --> (Not null, Unique), Uniquley Identifier 
+FK --> (Avoid unreal data), Refrence (Relationship)
+
+        Normalization: 
+                no redundancy
+                no duplicate
+
+                1NF 
+                        a: Atomic Attribute 
+                                No Composite Attribute   -->   split into new Column 
+                                No Multi Value Attribute  --> split into new Table
+
+                                Phone 1    Phone 2   Phone 3   Phone 4 
+
+                        b: No Repeated Group Of Data  (same data save in db)
+                                choose a good pk 
+                              
+
+
+        - Supplier
+                supplier_id         PK  AUTO_INCREMENT
+                name                    Not Null
+                phone               multi value  (1 phone number)  Unique 
+                email               multi value   (1 enauk address)  unique
+                supplier_type(foreign or internal)    Not Null  Default('international)
+                Location(Address)                      Not Null 
+
+
+
+                ```we can split it 
+                    supplier_phone 
+                        supplier_id    Phone 1     phone 2   phone 3   phone 4  
+
+                    Location -> country   city district     
+
+
+
+        - buy
+                buy_id              PK  AUTO_INCREMENT
+                supplier_id(name, fk)           Not Null    INT       Refrences supplier (supplier_id) ON DELETE No ACTION ON UPDATE Cascade
+                employee_id (buyer_name)                   INT       Refrences employee (employee_id) ON DELETE Set Null ON UPDATE Cascade
+                buy_date  (year/month/day)              Not Null   Date
+
+
+        - buy detail 
+                detail_id                       int  PK AUTO_INCREMENT
+                buy_id                          int not null   Refrences buy (buy_id) On DELETE Cascade On UPDATE CASCADE 
+                product_name                    Not Null 
+                category_id                        Not Null Refrences category (category_id) On DELETE No Action On UPDATE CASCADE 
+                description                     TEXT
+                quantity                        Not Null   INT
+                unitprice                       Not Null   INT
+                totalprice                      Not Null   INT
+                manufacture_date  (year/month/day)      Date
+                expire_date     Date
+
+
+                
+        - product
+               produnt_id             PK  AUTO_INCREMENT
+               product_name             Not Null 
+               category                 Not Null 
+               unitprice                Not Null 
+               currency                 Not Null 
+               image        (URL)
+               store_date(date that stored in invoice)    Not Null 
+               location                 Not Null 
+
+        - employee 
+                employee_id,   nic(num tazkira, nationa identety card)   PK  AUTO_INCREMENT              
+                first name              Not Null 
+                last name               Not Null 
+                position                Not Null 
+                education               Not Null 
+                phone                   Unique Not Null 
+                email                   Unique
+                address  (city, district, street, house)  Not Null 
+                image                   Not Null 
+                gender                  Not Null 
+                hire_date               Not Null 
+                dob                     Not Null 
+                matrial_status                Not Null 
+                salary  (ust amount, in af)  Not Null          
+                shift                   Not Null 
+
+        - subscriber( online customers ) 
+                subscriber_id                PK  AUTO_INCREMENT
+                subscriber_name                 Not Null 
+                image 
+                phone                           Unique  Not Null 
+                email                           Unique
+                dob                             Not Null 
+                gender                          Not Null 
+                address                         Not Null 
+
+        -  Orders 
+                order_id             PK   AUTO_INCREMENT
+                subscriber_id        Refrences subscriber(subscriber_id) ON DELETE CASCADE ON UPDATE Cascade   Not Null                 
+                order_date              Not Null 
+                //Product_id           Refrences product(product_id) ON DELETE NO ACTION ON UPDATE Cascade
+                //quantity
+                //unit price
+                //total price
+                //remark(comment)
+
+        - order_detail 
+                detail_id              PK   AUTO_INCREMENT
+                order_id             Refrences orders(order_id) ON DELETE Cascade ON UPDATE Cascade     Not Null 
+                Product_id           Refrences product(product_id) ON DELETE NO ACTION ON UPDATE Cascade   Not Null 
+                quantity                         Not Null 
+                unit price                       Not Null 
+                total price                      Not Null 
+                remark(comment)    
+
+
+        - sales
+                sales_id (invoice_id)                   PK  AUTO_INCREMENT
+                employee_id(seller_name)    NULL   Refrences employee(employee_id) ON DELETE SET NULL ON UPDATE Cascade
+                sale_date                        Not Null 
+                //produnt_id              Refrences product (product_id) ON DELETE NO ACTION ON UPDATE Cascade
+                //quantity
+                //unitprice
+                //totalprice
+                //discount
+                //totalamount
+               
+
+        =   sales_detail 
+                detail_id               PK AUTO_INCREMENT
+                produnt_id              Refrences product (product_id) ON DELETE NO ACTION ON UPDATE Cascade   Not Null 
+                quantity                 Not Null 
+                unitprice                Not Null 
+                totalprice               Not Null 
+                discount    Not Null  Default(0)
+                totalamount                       Not Null 
+
+
+
+
+
+        - sales_return 
+                return_id                   PK  AUTO_INCREMENT
+                product_id                Refrences product (product_id) ON DELETE NO ACTION ON UPDATE Cascade    Not Null 
+                return_date                      Not Null 
+                reason                           Not Null 
+                quantity                         Not Null 
+                unitprice                        Not Null 
+                totalprice                       Not Null 
+
+
+                    
+
+        - expense 
+                expense_id                   PK  AUTO_INCREMENT
+                title                            Not Null 
+                amount(salary amount)                    Not Null 
+                currency                                 Not Null 
+                pay_date                                 Not Null 
+                payer_name (employee_id)      NULL   Refrences employee (employee_id) ON DELETE  SET NULL ON UPDATE Cascade
+                receiver                                 Not Null 
+
+        - users 
+                employee_id(user_id)   FK(from employee tbl)          PK   can not be auto increment , Refrences employee(employee_id) ON DELETE CASCADE ON UPDATE CASCADE
+                username                 unique    Not Null 
+                password                Not Null   
+                
+         - user_level (Authorization) 
+                employee_id    FK(users)         PK     can not be auto increment , Refrences users(employee_id)  (one to one relationship)
+                head(admin)                              Not Null  Default(0)
+                hr(employee)                                    Not Null  Default(0)
+                stock(inventory)                                 Not Null  Default(0)
+                finance                                          Not Null  Default(0)
+
+
+                                Access level in db 
+                                        - none    0    
+                                        - read     2     2^0
+                                        - write    2     2^1
+                                        - UPDATE   4     2^2
+                                        - DELETE   8     2^3
+
+
+
+    2 NF:  
+        in This project there is no need for the 2nd NF
+        No Partial Dependency --> Each none key Attribute should depend on complete (whole) PK
+
+        When PK is composite we must check 
+        otherwise ther is no need for checking 
+
+        
+
+Full Functional Dependency   --> normal 
+Partial Dependency     --> not as a normal 
+Transitive Dependency  -->   3NF
+
+
+
+
+
+    3 NF:      
+
+                -- No Transitive Dependency  
+                Any Non key Attribute should not depend on non key attribute 
+                non key attribute should depend on PK not depend on another non key attribute 
+
+                it occures when we have inference value 
+                infrence value(Derrived Attribute)
+                for example  -->> age 
+                totalprice  = unitprice * quantity 
+
+                age ->dob   -->  Derrived attribute
+                totalprice --> infrence VAlue
+
+
+                        Total Price is not in 3rd normal form but we wanna fix it it program base app
+                        Total amount is also not in 3rd form 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,143 @@
+/// Back-End 
+
+1- Requirment Collection
+
+    Supplier Info --> buy something from the bussinessman
+            -   Company  --> we buy a product from a company
+    Buy Product --> boughted    
+            -   $usd -->  dolor
+    Store in Inventory --> keep it in some place
+            -   unitprice --> we set a price for our products with coming expenses
+    Product Information --> information about our product price and another information
+            -   image
+    Employee  --> Staff
+            - hiring form --> info about employees
+    Customers --> online subscribers
+
+    Sales
+            -   invoice  --> bill and multi product Sales in one invoice 
+
+    Chart of amount  --> money that a company release it for food, oil, employess payment ...
+            - expense field 
+                - employees salary 
+                - food
+                - rent
+                - electricity
+                ...
+    Expense  --> Daily expenses 
+                - daily reprot 
+
+        - authentication (login)        
+
+        - authorization (who can do what)
+
+
+
+
+2-  Conceptual Design:
+
+        in this level we define the entities and attributes
+
+        - Supplier
+                name
+                phone 
+                email
+                type(forigen or internal)
+
+        - buy
+                name 
+                category
+                description
+                quantity
+                unitprice
+                totalprice
+                supplier(name, fk)
+                buyer_name
+                buy_date
+                manufacture_date
+                expire_date
+
+        - product
+               name
+               category
+               unitprice                              
+               image
+               store_date(date that stored in invoice)
+               location
+
+        - employee 
+                nic(num tazkira, national identety card)
+                name
+                position
+                phone
+                email
+                education
+                address
+                image
+                gender
+                hire_date
+                dob        
+                salary                                
+                shift
+
+        - subscriber(online customer) 
+                account_id
+                name 
+                image 
+                phone
+                email
+                dob
+                gender
+                address
+                order_name
+                order_date
+                quantity
+                unit price
+                total price
+                comment                
+
+        - sales 
+                seller_name
+                produnt_name
+                quantity
+                unitprice
+                totalprice
+                discount
+                sale_date
+
+        - sales_return 
+                item_name
+                date
+                reason
+                quantity                
+
+        - expense 
+                title
+                amount                
+                date 
+                payer_name
+                receiver
+
+        - users 
+                employee
+                username
+                password               
+                
+         - user_level (Authorization) 
+                admin
+                hr(employee)
+                sale                
+                finance
+                 
+
+
+
+                user     permissions
+                1               N
+                N               1
+                        many-many   M:N
+
+
+
+
+

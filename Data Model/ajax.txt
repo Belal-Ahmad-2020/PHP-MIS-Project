@@ -1,0 +1,6 @@
+
+
+
+   Ajax --> change a part of a page without reloading the whole page.
+
+        in background do changes 

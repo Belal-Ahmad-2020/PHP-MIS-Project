@@ -1,0 +1,47 @@
+MIS Project 
+Sales Managment System
+
+Project -->
+1- Front End
+        - interface, Apllication
+            - Desktop Base
+            - Web Base (Web Apllication)
+
+        1- Functional Analysis
+        2- App Design (coding)    
+
+        3- Transaction Implementaion (Testing, checking, Deployment)
+
+
+        Deployment: --> 
+            Desktop Base:  setup
+            Web Base: 
+                        Local  -->                                 
+                                web server: apache 
+                                DBMS: MySQL
+                                Engine: PHP 
+
+                            - 1 PC
+                            - Network
+
+                        Online  --> Remote Access
+                                Domain: .com .af
+                                Host: buy space or storage --> ISP upload
+
+                                www.example.com
+
+2- Back End
+        - Core DB(table, relationship)
+
+        1- Requiremetn Collection --> functionality
+        2- Conceptual Design       --> Entity (attribute) 
+        3- Logical Design          --> KEY(pk, fk) , Normalization, relationship 
+        4- Physical Design          --> Create DB 
+
+
+
+
+ 
+
+ 
+        

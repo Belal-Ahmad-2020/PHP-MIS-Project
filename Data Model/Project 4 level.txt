@@ -1,0 +1,179 @@
+4-  Physiacal Design 
+    Data Type, Create 
+        Data Type --> 
+
+
+Create Database milestone_third;
+
+
+
+
+ CREATE TABLE supplier (
+				supplier_id				INT PRIMARY KEY AUTO_INCREMENT,
+				name					VARCHAR(64) NOT NULL,
+				phone					VARCHAR(16) UNIQUE,
+				email					VARCHAR(128) UNIQUE,
+				supplier_type			BOOLEAN NOT NULL ,
+				location				VARCHAR(128) NOT NULL
+);
+
+CREATE TABLE category  (
+				category_id				INT PRIMARY KEY AUTO_INCREMENT,
+				category_name			VARCHAR(64) NOT NULL UNIQUE 
+);
+				
+CREATE TABLE 	buy (
+				buy_id				INT PRIMARY KEY AUTO_INCREMENT,
+				supplier_id	  		INT NOT NULL ,
+				employee_id			INT ,
+				buy_date			DATE NOT NULL,
+	CONSTRAINT supplier_buy_fk FOREIGN KEY (supplier_id) REFERENCES supplier (supplier_id) ON DELETE NO ACTION ON UPDATE CASCADE ,
+	CONSTRAINT employee_buy_fk FOREIGN KEY (employee_id) REFERENCES employee (employee_id) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+CREATE TABLE buy_detail (
+				detail_id			INT PRIMARY KEY AUTO_INCREMENT,
+				buy_id				INT NOT NULL,
+				product_name		VARCHAR(64) NOT NULL,
+				category_id			INT NOT NULL ,
+				description			TEXT	,
+				quantity 			INT NOT NULL,
+				unitprice			INT NOT NULL,
+				totalprice			INT NOT NULL,
+				manufacture_date	DATE NOT NULL,
+				expire_date			DATE,
+	CONSTRAINT category_buy_fk FOREIGN KEY (category_id) REFERENCES category (category_id) ON DELETE NO ACTION ON UPDATE CASCADE,
+	CONSTRAINT buy_buydetail_fk FOREIGN KEY (buy_id) REFERENCES buy (buy_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE  product		(
+				product_id			INT PRIMARY KEY AUTO_INCREMENT,
+				product_name		VARCHAR(64) NOT NULL,
+				category_id			INT NOT NULL ,
+				unitprice			INT NOT NULL,
+				quantity			INT NOT NULL,
+				image				VARCHAR(128),
+				store_date			DATE NOT NULL,
+				location			VARCHAR(128) NOT NULL	,
+	CONSTRAINT category_product_fk FOREIGN KEY (category_id) REFERENCES category (category_id) ON DELETE NO ACTION ON UPDATE CASCADE
+);
+
+CREATE TABLE  employee (
+				employee_id			INT PRIMARY KEY AUTO_INCREMENT,
+				firstname			VARCHAR(32) NOT NULL,
+				lastname			VARCHAR(32) NOT NULL,
+				position			VARCHAR(32) NOT NULL,
+				education			VARCHAR(32) NOT NULL,
+				phone				VARCHAR(16) NOT NULL UNIQUE ,
+				email				VARCHAR(128) UNIQUE,
+				address 			VARCHAR(128) NOT NULL,
+				image				VARCHAR(128) NOT NULL ,
+				gender				BOOLEAN NOT NULL,
+				hire_date			DATE NOT NULL,
+				dob					INT NOT NULL,
+				marital_status		BOOLEAN NOT NULL,
+				salary				INT NOT NULL,
+				shift				VARCHAR(32) NOT NULL
+);
+
+
+
+CREATE TABLE  subscriber (
+				subscriber_id		INT PRIMARY KEY AUTO_INCREMENT,
+				subscriber_name		VARCHAR(64) NOT NULL,
+				image				VARCHAR(128),
+				phone				VARCHAR(16) NOT NULL UNIQUE,
+				email				VARCHAR(128) UNIQUE,
+				dob					DATE NOT NULL,
+				gender				BOOLEAN NOT NULL,
+				address				VARCHAR(128)
+);
+
+CREATE TABLE orders (
+				order_id			INT PRIMARY KEY AUTO_INCREMENT,
+				subscriber_id		INT NOT NULL ,
+				order_date			DATE NOT NULL,
+	CONSTRAINT subscriber_order_fk FOREIGN KEY (subscriber_id) REFERENCES subscriber (subscriber_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE order_detail (
+				detail_id			INT PRIMARY KEY AUTO_INCREMENT ,
+				order_id			INT NOT NULL ,
+				product_id			INT NOT NULL ,
+				quantity			INT NOT NULL,
+				unitprice			INT NOT NULL,
+				totalprice			INT NOT NULL,
+				remark				TEXT,
+	CONSTRAINT order_detail_fk FOREIGN KEY (order_id) REFERENCES orders (order_id) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT product_orderdetail_fk FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE NO ACTION ON UPDATE CASCADE
+);
+
+CREATE TABLE sales (
+				sales_id			INT PRIMARY KEY AUTO_INCREMENT,
+				employee_id			INT ,
+				sale_date			DATE NOT NULL,
+	CONSTRAINT employee_sales_fk FOREIGN KEY (employee_id) REFERENCES employee (employee_id) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+CREATE TABLE sales_detail (
+				detail_id			INT PRIMARY KEY AUTO_INCREMENT,
+				sales_id			INT NOT NULL ,
+				product_id			INT NOT NULL ,
+				quantity			INT NOT NULL,
+				unitprice			INT NOT NULL,
+				totalprice			INT NOT NULL,	
+				discount			FLOAT NOT NULL DEFAULT 0			,
+				totalamount			FLOAT NOT NULL,
+	CONSTRAINT product_salesdetail_fk FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE NO ACTION ON UPDATE CASCADE,
+	CONSTRAINT sales_detail_fk FOREIGN KEY (sales_id) REFERENCES sales (sales_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE sales_return (
+				return_id			INT PRIMARY KEY AUTO_INCREMENT,
+				sales_id			INT NOT NULL,
+				product_id			INT NOT NULL ,
+				return_date			DATE NOT NULL,
+				reason				VARCHAR(255) NOT NULL,
+				quantity			INT NOT NULL,
+				unitprice			INT NOT NULL,
+				totalprice			INT NOT NULL,
+	CONSTRAINT product_sales_return_fk FOREIGN KEY (product_id) REFERENCES product (product_id) ON DELETE NO ACTION ON UPDATE CASCADE,
+	CONSTRAINT sales_salesreturn_fk FOREIGN KEY (sales_id) REFERENCES sales (sales_id) ON DELETE NO ACTION ON UPDATE CASCADE
+);
+
+CREATE TABLE expense	 (
+				expense_id			INT PRIMARY KEY AUTO_INCREMENT,
+				title				VARCHAR(255) NOT NULL,
+				amount				FLOAT NOT NULL,
+				currency			CHAR(3) NOT NULL,
+				pay_date			DATE NOT NULL,
+				employee_id			INT ,
+				receiver			VARCHAR(64) NOT NULL,
+	CONSTRAINT employee_expense_fk FOREIGN KEY (employee_id) REFERENCES employee (employee_id) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
+CREATE TABLE users (
+				employee_id			INT PRIMARY KEY ,
+				username			VARCHAR(32) NOT NULL UNIQUE,
+				password			VARCHAR(64) NOT NULL,
+	CONSTRAINT employee_users_fk FOREIGN KEY (employee_id) REFERENCES employee (employee_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE user_level (
+				employee_id			INT PRIMARY KEY ,
+				head				INT NOT NULL DEFAULT 0,
+				hr					INT NOT NULL DEFAULT 0,
+				inventory			INT NOT NULL DEFAULT 0,
+				finance				INT NOT NULL DEFAULT 0,
+	CONSTRAINT user_userlevel_fk FOREIGN KEY (employee_id) REFERENCES users (employee_id) ON DELETE CASCADE ON UPDATE CASCADE
+);				
+					
+CREATE TABLE advertisement  (
+	ads_id			INT 		PRIMARY KEY AUTO_INCREMENT,
+	ads_title		VARCHAR(128) NOT NULL,
+	ads_pic         VARCHAR(128) NOT NULL,
+	ads_desc		TEXT		 ,
+	ads_url			VARCHAR(255) ,
+	ads_date		DATE NOT NULL ,
+	ads_expire		DATE NOT NULL
+);
